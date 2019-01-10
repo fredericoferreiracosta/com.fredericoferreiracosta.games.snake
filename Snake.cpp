@@ -7,9 +7,8 @@ using namespace std;
 bool gameOver;
 const int WIDTH = 36;
 const int HEIGHT = 14;
-const int SPEEDY = 200;
-const int SPEEDX = 100;
-int currentSpeed = SPEEDX; // The lesser the faster, should change according the size of the direction
+int speedY = 200; // The lesser the faster
+int speedX = 100;
 int snakeX[100], snakeY[100], fruitX, fruitY;
 int snakeSize;
 int score;
@@ -24,8 +23,44 @@ enum
 
 void generateNewFruitPosition()
 {
-    fruitX = rand() % (WIDTH - 1);
-    fruitY = rand() % (HEIGHT - 1);
+    bool validPosition = false;
+    while (!validPosition)
+    {
+        fruitX = rand() % WIDTH;
+        if (fruitX != 0 && fruitX != WIDTH)
+            validPosition = true;
+        if (!validPosition)
+        {
+            for (int i = 0; i <= snakeSize; i++)
+            {
+                if (snakeX[i] == fruitX)
+                {
+                    validPosition = false;
+                    break;
+                }
+                validPosition = true;
+            }
+        }
+    }
+    validPosition = false;
+    while (!validPosition)
+    {
+        fruitY = rand() % HEIGHT;
+        if (fruitY != 0 && fruitY != HEIGHT)
+            validPosition = true;
+        if (!validPosition)
+        {
+            for (int i = 0; i <= snakeSize; i++)
+            {
+                if (snakeY[i] == fruitY)
+                {
+                    validPosition = false;
+                    break;
+                }
+                validPosition = true;
+            }
+        }
+    }
 }
 
 void setup()
@@ -36,7 +71,7 @@ void setup()
     snakeY[0] = HEIGHT / 2;
     snakeSize = 0;
     direction = STOP;
-    timeout(currentSpeed);
+    timeout(speedX);
     generateNewFruitPosition();
 }
 
@@ -132,19 +167,19 @@ void logic()
     {
         case UP:
             snakeY[0]--;
-            timeout(SPEEDY);
+            timeout(speedY);
             break;
         case DOWN:
             snakeY[0]++;
-            timeout(SPEEDY);
+            timeout(speedY);
             break;
         case LEFT:
             snakeX[0]--;
-            timeout(SPEEDX);
+            timeout(speedX);
             break;
         case RIGHT:
             snakeX[0]++;
-            timeout(SPEEDX);
+            timeout(speedX);
             break;
     }
 
@@ -153,6 +188,8 @@ void logic()
     {
         score+= 10;
         snakeSize++;
+        speedX-=3;
+        speedY-=6;
         generateNewFruitPosition();
     }
 
