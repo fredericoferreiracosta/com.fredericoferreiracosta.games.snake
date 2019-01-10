@@ -148,7 +148,7 @@ void logic()
     int tempX = snakeX[0];
     int tempY = snakeY[0];
 
-    /* Moviment */
+    /* Movement */
     if (direction != STOP)
     {
         for (int i = 1; i <= snakeSize; i++)
@@ -162,7 +162,7 @@ void logic()
         }
     }
 
-    /* Moviment */
+    /* Movement */
     switch (direction)
     {
         case UP:
@@ -193,7 +193,7 @@ void logic()
         generateNewFruitPosition();
     }
 
-    /* Moviment - Prevent to move against the wall */
+    /* Movement - Prevent to move against the wall */
     if (snakeX[0] == WIDTH)
     {
         snakeX[0] = 1;
